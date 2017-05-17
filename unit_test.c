@@ -108,12 +108,26 @@ void test_fisk_ll(void)
     printf("NULL freed %d\n", count);
 }
 
+char* err_str(int32_t err_code);
+
+void test_fisk_vars(void)
+{
+    char* error;
+
+    error = err_str(1);
+    printf("error %p %s\r\n", error, error);
+
+    error = err_str(2);
+    printf("error %p %s\r\n", error, error);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(test_fisk_1);
     RUN_TEST(test_fisk_malloc);
     RUN_TEST(test_fisk_ll);
+    RUN_TEST(test_fisk_vars);
     int result = UNITY_END();
 
     return result;

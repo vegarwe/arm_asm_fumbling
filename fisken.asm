@@ -1,17 +1,21 @@
+;@ vim:ft=armv5
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ;@ @brief Learning ARM assembler
 ;@
 ;@ Header section
 ;@
-    ;PRESERVE8
+;NAME FISKEN
     AREA asm_func, CODE, READONLY
+    ;ARM                         ; Following code is ARM code
     EXPORT my_asm
+    export err_str
     EXPORT ll_init
     EXPORT ll_add
     EXPORT ll_next
     EXPORT ll_free
     IMPORT malloc
     IMPORT free
+    ;PRESERVE8
 
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ;@ @brief Random (unexported) assembly function
@@ -68,7 +72,6 @@ while_start
 
     add     r0, r0, r0, lsl #1      ; r0 = 3 * r0
     bx      lr
-
 
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ;@ @brief Allocate and initialize linked list structure
@@ -143,8 +146,51 @@ free_loop
     add     r2, #1              ; Increment freed count
     b       free_loop           ; Loop
 
+;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+;@ @brief Some error strings used by err_str
+error1
+    dcb     "General purpose some shit when down error", 0
+error2
+    dcb     "This is some weird shit error", 0
+error1_old
+    dcw     0x6547, 0x656e, 0x6172, 0x206c, 0x7570, 0x7072, 0x736f, 0x2065, 0x6f73, 0x656d, 0x7320, 0x6968, 0x2074, 0x6877, 0x6e65, 0x6420, 0x776f, 0x206e, 0x7265, 0x6f72, 0x0072
+error_table
+    dcd     0, error1, error2       ; Start index at 1 (not zero)
+    ;DCI.W   .error1
+    ;DCI.W   0xf3af8000
 
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-;@ vim:ft=armv5
+;@ @brief Get error string from err code
+;@
+;@ @param[in]   errno   Error code number
+;@
+;@ @return      Descriptive error string
+err_str
+    ;@ TODO: Should now size of error_table, only look up valid indexes
+    adr     r1, error_table         ; Read in start of error table
+    ldr     r0, [r1, r0, lsl #2]    ; Look up r0 (*4) in r1, store in r0
+    bx      lr                      ; Return pointer to error string
 
-    end
+
+;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+;.ascii "Hello Worldn"
+;error
+;            sets "General purpose some shit when down error"
+;MSG    DB      'Press A Key To Continue', 0
+;pool
+;            SPACE 8
+;    LDR     r1, =0x20026
+;    LDR     r1, =0x20027
+;    nop
+
+; c = lambda b: ', '.join(['0x%02x%02x' % (ord(b1), ord(b0)) for b0, b1 in zip(b[0::2], b[1::2])]) + ', 0'
+; def c(b):
+;   blen = len(b)
+;   plen = int(math.ceil(len(b) / 2.) * 2) - len(b)
+;   b   += '\x00' * plen
+;   retv = ', '.join(['0x%02x%02x' % (ord(b1), ord(b0)) for b0, b1 in zip(b[0::2], b[1::2])])
+;   return retv if plen > 0 else retv + ', 0x0000'
+
+
+;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    END
