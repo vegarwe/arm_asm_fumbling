@@ -79,21 +79,15 @@ while_start
 ;@ @return      New linked list node
 ll_init
     ; Allocate memory
-    push    {r0-r1, r12, lr}
-    mov     r0, #8
-    bl.w    malloc
-    pop     {r2-r3, r12, lr}
-
-    ; Store pointer to new memory in input param
-    str     r0, [r2]
-
-    ; Zero initialize new node
-    ; TODO: store multiple ? memset?
-    mov     r2, #0
-    str     r2, [r0, #0]
-    str     r3, [r0, #4]
-
-    bx      lr
+    push    {r0-r1, r12, lr}    ; Store registers (including params)
+    mov     r0, #8              ; Need 8 bytes of data for new node
+    bl.w    malloc              ; Allocate memory for new node
+    pop     {r2-r3, r12, lr}    ; Pop params ll and value into r2 and r3
+    mov     r1, #0              ; Zero initialize new node
+    str     r0, [r2]            ; Store pointer to new memory in input param
+    str     r1, [r0, #0]        ; Next should not point anywhere
+    str     r3, [r0, #4]        ; Store value of new node
+    bx      lr                  ; Return new node (already in r0)
 
 
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -112,7 +106,7 @@ ll_add
     str     r0, [r2]            ; Store pointer to new memory in input param
     str     r1, [r0, #0]        ; Store old next in new node
     str     r3, [r0, #4]        ; Store value of new node
-    bx      lr
+    bx      lr                  ; Return new node (already in r0)
 
 
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
