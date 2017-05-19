@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <unity.h>
 
 
@@ -73,6 +74,7 @@ void test_fisk_malloc(void)
 
 void*   ll_init(void** ll, uint32_t value);
 void*   ll_add( void*  ll, uint32_t value);
+int     ll_del( void*  ll, uint32_t value);
 void*   ll_next(void*  ll);
 int     ll_free(void*  ll);
 
@@ -95,11 +97,18 @@ void test_fisk_ll(void)
     ll_add(head,    6);
     ll = ll_add(ll, 7);
 
+    printf("hei %d\n", ll_del(head, 3));
+    //if (! ll_del(head, 3)) {
+    //    printf("Node not found");
+    //}
+
     printf("Iterate\n");
     ll = head;
     do {
         printf("ll  : %p %p %p %d\n", &ll, ll, (void*)*(((uint32_t*)ll)+0), *(((uint32_t*)ll)+1));
     } while ((ll = ll_next(ll)) != NULL);
+
+    // TODO: Implement remove by value
 
     int count = ll_free(head);
     printf("head freed %d\n", count);
@@ -121,6 +130,13 @@ void test_fisk_vars(void)
     printf("error %p %s\r\n", error, error);
 }
 
+void fisk_print(void);
+
+void test_fisk_printf(void)
+{
+    fisk_print();
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -128,6 +144,7 @@ int main(void)
     RUN_TEST(test_fisk_malloc);
     RUN_TEST(test_fisk_ll);
     RUN_TEST(test_fisk_vars);
+    RUN_TEST(test_fisk_printf);
     int result = UNITY_END();
 
     return result;
