@@ -97,10 +97,21 @@ void test_fisk_ll(void)
     ll_add(head,    6);
     ll = ll_add(ll, 7);
 
-    printf("hei %d\n", ll_del(head, 3));
-    //if (! ll_del(head, 3)) {
-    //    printf("Node not found");
-    //}
+    //printf("heeeeeeeeeeeeeeei, will remove index %d\n", ll_del(head, 2));
+    if (! ll_del(head, 1)) {
+        printf("Node not found\n");
+    } else {
+        printf("Node removed\n");
+    }
+
+    // ll  : 200058ac 200038e0 20003930 1
+    // ll  : 200058ac 20003930 200038f0 6
+    // ll  : 200058ac 200038f0 20003900 2
+    // ll  : 200058ac 20003900 20003910 3
+    // ll  : 200058ac 20003910 20003920 4
+    // ll  : 200058ac 20003920 20003940 5
+    // ll  : 200058ac 20003940 00000000 7
+
 
     printf("Iterate\n");
     ll = head;

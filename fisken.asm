@@ -121,29 +121,35 @@ ll_add
  ; @param[in]   value   Value of node to be removed
  ;
  ; @return      True if found otherwise false
+ ; TODO: Doesn't call free (yet)
 ll_del
-    mov     r3, r1              ; r3 holds value to look for
-    mov     r1, r0              ; r1 holds current node
+    movs    r3, r0              ; r3 holds previous node
+    bxeq    lr                  ;   Return (r0 already set to 'false'
+    ldr     r2, [r0, #4]        ; Read in value (of first node)
+    cmp     r1, r2              ; Check value against target
+    beq     del_first
 del_loop
-    cmp     r1, #0              ; Check if next is NULL
-    moveq   r0, #0              ;   Set return value 'false'
-    bxeq    lr                  ;   Return
-    mov     r0, r1              ; Setup node to be freed
-    ldr     r1, [r0, #4]        ; Read in value
-    cmp     r3, r1              ; Check value against target
+    ldr     r0, [r0]            ; Read in 'next'
+    cmp     r0, #0              ; Check if next is NULL
+    bxeq    lr                  ;   Return (r0 already set to 'false')
+    ldr     r2, [r0, #4]        ; Read in value
+    cmp     r1, r2              ; Check value against target
     beq     del_node
-    ldr     r1, [r0]            ; Read in 'next'
+    movs    r3, r0              ; Set new pervious node
     b       del_loop            ; Loop
 del_node
-    ; What if this is the last node?
-    ldr     r1, [r0]            ; Read in 'next'
-    ldr     r2, [r1, #4]        ; Read in 'next' value
-    str     r2, [r0, #4]        ; Move value to current node
-    ldr     r2, [r1, #0]        ; Read in 'next' value
-    str     r2, [r0, #0]        ; Move 'next' next pointer
-    ;push    {r1-r2, r12, lr}    ; Store registers
-    ;bl.w    free                ; Free current
-    ;pop     {r1-r2, r12, lr}    ; Restore registers
+    ldr     r2, [r0, #0]        ; Read in 'next.next' (might be NULL)
+    str     r2, [r3, #0]        ; Move next.next to current.next
+    mov     r0, #1              ; Set return value 'true'
+    bx      lr                  ; Return
+del_first                       ; Cannot delete first node, must move to instead
+    ldr     r0, [r0]            ; Read in 'next' (might be NULL)
+    cmp     r0, #0              ; Check if next is NULL
+    bxeq    lr                  ;   Return false, (we actually cannot delete first node if list then become empty!)
+    ldr     r2, [r0, #0]        ; Read in 'next.next' (might be NULL)
+    str     r2, [r3, #0]        ; Move next.next to current.next
+    ldr     r2, [r0, #4]        ; Read in 'next.value'
+    str     r2, [r3, #4]        ; Move next.next to current.next
     mov     r0, #1              ; Set return value 'true'
     bx      lr                  ; Return
 
