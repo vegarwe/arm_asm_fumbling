@@ -122,19 +122,30 @@ ll_add
  ;
  ; @return      True if found otherwise false
 ll_del
-    mov     r2, #0              ; r2 holds freed count
+    mov     r3, r1              ; r3 holds value to look for
     mov     r1, r0              ; r1 holds current node
 del_loop
     cmp     r1, #0              ; Check if next is NULL
-    moveq   r0, r2              ;   Return freed count
+    moveq   r0, #0              ;   Set return value 'false'
     bxeq    lr                  ;   Return
     mov     r0, r1              ; Setup node to be freed
-    ldr     r1, [r1]            ; Read in 'next'
+    ldr     r1, [r0, #4]        ; Read in value
+    cmp     r3, r1              ; Check value against target
+    beq     del_node
+    ldr     r1, [r0]            ; Read in 'next'
+    b       del_loop            ; Loop
+del_node
+    ; What if this is the last node?
+    ldr     r1, [r0]            ; Read in 'next'
+    ldr     r2, [r1, #4]        ; Read in 'next' value
+    str     r2, [r0, #4]        ; Move value to current node
+    ldr     r2, [r1, #0]        ; Read in 'next' value
+    str     r2, [r0, #0]        ; Move 'next' next pointer
     ;push    {r1-r2, r12, lr}    ; Store registers
     ;bl.w    free                ; Free current
     ;pop     {r1-r2, r12, lr}    ; Restore registers
-    add     r2, #1              ; Increment freed count
-    b       del_loop            ; Loop
+    mov     r0, #1              ; Set return value 'true'
+    bx      lr                  ; Return
 
 
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
