@@ -240,7 +240,7 @@ err_str
 ;   return retv if plen > 0 else retv + ', 0x0000'
 
 
-print_string1 dcb     "Hello my friend, from ASM\n", 0
+print_string1 dcb     "Hello my friend, I give you number %d from ASM\n", 0
     align   4
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
  ; @brief Play with outputing stuff to stdout
@@ -249,11 +249,12 @@ print_string1 dcb     "Hello my friend, from ASM\n", 0
  ;
  ; @return      Nothing what so ever
 fisk_print
-    push    {r0-r1, r12, lr}    ; Store registers (including params)
+    push    {r12, lr}           ; Store registers (including params)
     adr     r0, print_string1
+    mov     r1, #34             ; Give number to format string
     bl.w    printf              ; Allocate memory for new node
-    pop     {r0-r1, r12, lr}    ; Pop params ll and value into r2 and r3
-    bx      lr                      ; Return pointer to error string
+    pop     {r12, lr}           ; Pop params ll and value into r2 and r3
+    bx      lr                  ; Return what ever, nobody cares
 
 
 
