@@ -121,7 +121,6 @@ ll_add
  ; @param[in]   value   Value of node to be removed
  ;
  ; @return      True if found otherwise false
- ; TODO: Doesn't call free (yet)
 ll_del
     movs    r3, r0              ; r3 holds previous node
     bxeq    lr                  ;   Return (r0 already set to 'false'
@@ -140,6 +139,9 @@ del_loop
 del_node
     ldr     r2, [r0, #0]        ; Read in 'next.next' (might be NULL)
     str     r2, [r3, #0]        ; Move next.next to current.next
+    push    {r0-r3, r12, lr}    ; Store registers
+    bl.w    free                ; Free current
+    pop     {r0-r3, r12, lr}    ; Restore registers
     mov     r0, #1              ; Set return value 'true'
     bx      lr                  ; Return
 del_first                       ; Cannot delete first node, must move to instead
@@ -150,6 +152,9 @@ del_first                       ; Cannot delete first node, must move to instead
     str     r2, [r3, #0]        ; Move next.next to current.next
     ldr     r2, [r0, #4]        ; Read in 'next.value'
     str     r2, [r3, #4]        ; Move next.next to current.next
+    push    {r0-r3, r12, lr}    ; Store registers
+    bl.w    free                ; Free current
+    pop     {r0-r3, r12, lr}    ; Restore registers
     mov     r0, #1              ; Set return value 'true'
     bx      lr                  ; Return
 
