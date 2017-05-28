@@ -14,9 +14,14 @@
     EXPORT ll_next
     EXPORT ll_free
     EXPORT fisk_print
+    export external_data
+    export fizz_buzz
     IMPORT malloc
     IMPORT free
     IMPORT printf
+    IMPORT sprintf
+    IMPORT data1
+    IMPORT data2
     ;PRESERVE8
 
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -253,11 +258,66 @@ fisk_print
     adr     r0, print_string1
     mov     r1, #34             ; Give number to format string
     bl.w    printf              ; Allocate memory for new node
-    pop     {r12, lr}           ; Pop params ll and value into r2 and r3
+    pop     {r12, lr}           ; Restore registers
     bx      lr                  ; Return what ever, nobody cares
 
+;fizz_buzz_buff dcb     "100", 0
+fizz_buzz_frms dcb     "%u", 0
+fizz_buzz_fizz dcb     "fizz", 0
+fizz_buzz_buzz dcb     "buzz", 0
+fizz_buzz_both dcb     "fizzbuzz", 0
+    align   4
+;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ ; @brief Fizz buzz kata
+ ;
+ ; @param[in]   input   Input number to kata
+ ;
+ ; @return      Char buffer with result of Kata
+fizz_buzz
+    mov     r2, r0              ; Store in case of neither
+    mvn     r1, r0              ; Change sign
+    add     r1, #1              ; Change sign (two's complement)
+    mov     r0, r1              ; Duplicate negative value
+fizz_buzz_loop3
+    adds    r0, #3
+    bmi     fizz_buzz_loop3
+fizz_buzz_loop5
+    adds    r1, #5
+    bmi     fizz_buzz_loop5
+    ; Check for fizz or buzz
+    cmp     r0, #0
+    beq     fizz_buzz_end3
+    cmp     r1, #0
+    beq     fizz_buzz_end5
+    ; Create string from number
+    push    {r12, lr}           ; Store registers
+    ldr     r0, =data1
+    adr     r1, fizz_buzz_frms  ; Fizz buzz format string
+    ;                           ; Input param already in r2
+    bl.w    sprintf
+    pop     {r12, lr}           ; Restore registers
+    ldr     r0, =data1
+    bx      lr                  ; Return char buffer
+fizz_buzz_end5
+    adreq   r0, fizz_buzz_buzz
+    bx      lr
+fizz_buzz_end3
+    cmp     r1, #0
+    adreq   r0, fizz_buzz_both
+    adrne   r0, fizz_buzz_fizz
+    bx      lr
 
+
+    align   4
+;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ ; @brief Return stuff from data section (see separate .asm file)
+ ;
+ ; @return      Char buffer with addresses loaded in from named external symbol
+external_data
+    ldr     r0, =data2          ; Buffer to return
+    bx      lr                  ; Return char buffer
 
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ; vim:ft=armv5
     END
+

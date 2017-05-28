@@ -148,6 +148,29 @@ void test_fisk_printf(void)
     fisk_print();
 }
 
+char* external_data(void);
+
+void test_fisk_external_data(void)
+{
+    printf("'%s'\r\n", external_data());
+}
+
+char* fizz_buzz(int input);
+
+void test_fisk_fizz_buzz(void)
+{
+    TEST_ASSERT_EQUAL_STRING(   "1",     fizz_buzz( 1));
+    TEST_ASSERT_EQUAL_STRING(   "2",     fizz_buzz( 2));
+    TEST_ASSERT_EQUAL_STRING("fizz",     fizz_buzz( 3));
+    TEST_ASSERT_EQUAL_STRING(   "4",     fizz_buzz( 4));
+    TEST_ASSERT_EQUAL_STRING("buzz",     fizz_buzz( 5));
+    TEST_ASSERT_EQUAL_STRING("fizz",     fizz_buzz( 6));
+    TEST_ASSERT_EQUAL_STRING(   "7",     fizz_buzz( 7));
+    TEST_ASSERT_EQUAL_STRING("fizz",     fizz_buzz( 9));
+    TEST_ASSERT_EQUAL_STRING("buzz",     fizz_buzz(10));
+    TEST_ASSERT_EQUAL_STRING("fizzbuzz", fizz_buzz(15));
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -156,6 +179,8 @@ int main(void)
     RUN_TEST(test_fisk_ll);
     RUN_TEST(test_fisk_vars);
     RUN_TEST(test_fisk_printf);
+    RUN_TEST(test_fisk_external_data);
+    RUN_TEST(test_fisk_fizz_buzz);
     int result = UNITY_END();
 
     return result;
