@@ -1,27 +1,28 @@
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Learning ARM assembler, asm_func code section
- ;
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    AREA asm_func, CODE, READONLY
-    ;ARM                         ; Following code is ARM code
-    EXPORT my_asm
-    export err_str
-    EXPORT ll_init
-    EXPORT ll_add
-    EXPORT ll_del
-    EXPORT ll_next
-    EXPORT ll_free
-    EXPORT fisk_print
-    export external_data
-    export fizz_buzz
-    IMPORT malloc
-    IMPORT free
-    IMPORT printf
-    IMPORT sprintf
+;------------------------------------------------------------------------------
+; @brief Learning ARM assembler, asm_func code section
+;------------------------------------------------------------------------------
+    area    asm_func, code, readonly
+    thumb                       ; Code section contains Thumb(2) code
+    export  my_asm
+    export  err_str
+    export  ll_init
+    export  ll_add
+    export  ll_del
+    export  ll_next
+    export  ll_free
+    export  fisk_print
+    export  external_data
+    export  fizz_buzz
+    import  malloc
+    import  free
+    import  printf
+    import  sprintf
     ;PRESERVE8
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Random (unexported) assembly function
+
+;------------------------------------------------------------------------------
+; @brief Random (unexported) assembly function
+;------------------------------------------------------------------------------
 my_other_asm
     ; Do some memory storing
     mov     r2, #0x0000ffff
@@ -44,15 +45,16 @@ my_other_asm
     bx      lr
 
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Random assembly function
- ;
- ; Calls my other random assembly function as well as looping
- ;
- ; @param[in]   value   A number that will be manipulated and returned
- ; @param[out]  buff    uint32_t array (will be slightly populated)
- ;
- ; @return      The input value (after beeing manipulated)
+;------------------------------------------------------------------------------
+; @brief Random assembly function
+;
+; Calls my other random assembly function as well as looping
+;
+; @param[in]    value   A number that will be manipulated and returned
+; @param[out]   buff    uint32_t array (will be slightly populated)
+;
+; @return       The input value (after beeing manipulated)
+;------------------------------------------------------------------------------
 my_asm
     push    {r0-r3, r12, lr}
     bl      my_other_asm
@@ -76,13 +78,15 @@ while_start
     add     r0, r0, r0, lsl #1      ; r0 = 3 * r0
     bx      lr
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Allocate and initialize linked list structure
- ;
- ; @param[out]  p_ll    Pointer to linked list structure (will be populated)
- ; @param[in]   value   Value to be stored in new LL structure
- ;
- ; @return      New linked list node
+
+;------------------------------------------------------------------------------
+; @brief Allocate and initialize linked list structure
+;
+; @param[out]   p_ll    Pointer to linked list structure (will be populated)
+; @param[in]    value   Value to be stored in new LL structure
+;
+; @return       New linked list node
+;------------------------------------------------------------------------------
 ll_init
     ; Allocate memory
     push    {r0-r1, r12, lr}    ; Store registers (including params)
@@ -96,13 +100,14 @@ ll_init
     bx      lr                  ; Return new node (already in r0)
 
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Put value (allocating new node for it) into linked list
- ;
- ; @param[in]   ll      Linked list structure
- ; @param[in]   value   Value to be stored in new LL structure
- ;
- ; @return      New linked list node
+;------------------------------------------------------------------------------
+; @brief Put value (allocating new node for it) into linked list
+;
+; @param[in]    ll      Linked list structure
+; @param[in]    value   Value to be stored in new LL structure
+;
+; @return       New linked list node
+;------------------------------------------------------------------------------
 ll_add
     push    {r0-r1, r12, lr}    ; Store registers (including params)
     mov     r0, #8              ; Need 8 bytes of data for new node
@@ -115,13 +120,14 @@ ll_add
     bx      lr                  ; Return new node (already in r0)
 
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Find first node with given value and remove it
- ;
- ; @param[in]   ll      Linked list (head) structure
- ; @param[in]   value   Value of node to be removed
- ;
- ; @return      True if found otherwise false
+;------------------------------------------------------------------------------
+; @brief Find first node with given value and remove it
+;
+; @param[in]    ll      Linked list (head) structure
+; @param[in]    value   Value of node to be removed
+;
+; @return       True if found otherwise false
+;------------------------------------------------------------------------------
 ll_del
     movs    r3, r0              ; r3 holds previous node
     bxeq    lr                  ;   Return (r0 already set to 'false'
@@ -160,25 +166,27 @@ del_first                       ; Cannot delete first node, must move to instead
     bx      lr                  ; Return
 
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Return next linked list entry
- ;
- ; @param[in]   ll      Linked list structure
- ;
- ; @return      Next linked list node
+;------------------------------------------------------------------------------
+; @brief Return next linked list entry
+;
+; @param[in]    ll      Linked list structure
+;
+; @return       Next linked list node
+;------------------------------------------------------------------------------
 ll_next
     ldr     r0, [r0]
     bx      lr
 
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Free linked list structure (from input to end)
- ;
- ; Loop through linked list, freeing nodes
- ;
- ; @param[in]   ll      (Head of) linked list structure
- ;
- ; @return      Number of freed elements
+;------------------------------------------------------------------------------
+; @brief Free linked list structure (from input to end)
+;
+; Loop through linked list, freeing nodes
+;
+; @param[in]    ll      (Head of) linked list structure
+;
+; @return       Number of freed elements
+;------------------------------------------------------------------------------
 ll_free
     mov     r2, #0              ; r2 holds freed count
     mov     r1, r0              ; r1 holds current node
@@ -194,8 +202,10 @@ free_loop
     add     r2, #1              ; Increment freed count
     b       free_loop           ; Loop
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Some error strings used by err_str
+
+;------------------------------------------------------------------------------
+; @brief Some error strings used by err_str
+;------------------------------------------------------------------------------
 error1
     dcb     "General purpose some shit when down error", 0
 error2
@@ -207,13 +217,13 @@ error_table
     dcd     0, error1, error2       ; Start index at 1 (not zero)
     ;DCI.W   .error1
     ;DCI.W   0xf3af8000
-
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Get error string from err code
- ;
- ; @param[in]   errno   Error code number
- ;
- ; @return      Descriptive error string
+;------------------------------------------------------------------------------
+; @brief Get error string from err code
+;
+; @param[in]    errno   Error code number
+;
+; @return       Descriptive error string
+;------------------------------------------------------------------------------
 err_str
     ;@ TODO: Should now size of error_table, only look up valid indexes
     adr     r1, error_table         ; Read in start of error table
@@ -221,34 +231,18 @@ err_str
     bx      lr                      ; Return pointer to error string
 
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-;.ascii "Hello Worldn"
-;error
-;            sets "General purpose some shit when down error"
-;MSG    DB      'Press A Key To Continue', 0
-;pool
-;            SPACE 8
-;    LDR     r1, =0x20026
-;    LDR     r1, =0x20027
-;    nop
-
-; c = lambda b: ', '.join(['0x%02x%02x' % (ord(b1), ord(b0)) for b0, b1 in zip(b[0::2], b[1::2])]) + ', 0'
-; def c(b):
-;   blen = len(b)
-;   plen = int(math.ceil(len(b) / 2.) * 2) - len(b)
-;   b   += '\x00' * plen
-;   retv = ', '.join(['0x%02x%02x' % (ord(b1), ord(b0)) for b0, b1 in zip(b[0::2], b[1::2])])
-;   return retv if plen > 0 else retv + ', 0x0000'
-
-
+;------------------------------------------------------------------------------
+; @brief Data used by fisk_print
+;------------------------------------------------------------------------------
 print_string1 dcb     "Hello my friend, I give you number %d from ASM\n", 0
-    align   4
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Play with outputing stuff to stdout
- ;
- ; @param[in]   str     Some output string presumably?
- ;
- ; @return      Nothing what so ever
+    align   4                   ; TODO: When do we need align?
+;------------------------------------------------------------------------------
+; @brief Play with outputing stuff to stdout
+;
+; @param[in]    str     Some output string presumably?
+;
+; @return       Nothing what so ever
+;------------------------------------------------------------------------------
 fisk_print
     push    {r12, lr}           ; Store registers (including params)
     adr     r0, print_string1
@@ -257,18 +251,22 @@ fisk_print
     pop     {r12, lr}           ; Restore registers
     bx      lr                  ; Return what ever, nobody cares
 
-;fizz_buzz_buff dcb     "100", 0
+
+;------------------------------------------------------------------------------
+; @brief Fizz buzz format and strings
+;------------------------------------------------------------------------------
 fizz_buzz_frms dcb     "%u", 0
 fizz_buzz_fizz dcb     "fizz", 0
 fizz_buzz_buzz dcb     "buzz", 0
 fizz_buzz_both dcb     "fizzbuzz", 0
     align   4
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Fizz buzz kata
- ;
- ; @param[in]   input   Input number to kata
- ;
- ; @return      Char buffer with result of Kata
+;------------------------------------------------------------------------------
+; @brief Fizz buzz kata
+;
+; @param[in]    input   Input number to kata
+;
+; @return       Char buffer with result of Kata
+;------------------------------------------------------------------------------
 fizz_buzz
     mov     r2, r0              ; Store in case of neither
     mvn     r1, r0              ; Change sign
@@ -305,28 +303,28 @@ fizz_buzz_end3
 
 
     align   4
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Return stuff from data section
- ;
- ; @return      Char buffer with addresses loaded in from named external symbol
+;------------------------------------------------------------------------------
+; @brief Return stuff from data section
+;
+; @return       Char buffer with addresses loaded in from named external symbol
+;------------------------------------------------------------------------------
 external_data
     ldr     r0, =asdf2          ; Buffer to return
     bx      lr                  ; Return char buffer
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+;------------------------------------------------------------------------------
+; @brief  asdf_data read write data section
+;------------------------------------------------------------------------------
+    area    asdf_data, data, readwrite
+    export  asdf2           ; Make asdf2 buffer available externally
+asdf1 space   255           ; defines 255 bytes of zeroed store
+asdf2 fill    50,0x63,1     ; defines 50 bytes containing 'c'
 
 
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief  asdf_data read write data section
- ;
-;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        AREA    asdf_data, DATA, READWRITE
-        EXPORT asdf1
-        EXPORT asdf2
-
-asdf1   SPACE   255       ; defines 255 bytes of zeroed store
-asdf2   FILL    50,0x63,1 ; defines 50 bytes containing 'c'
-
-    END
+;------------------------------------------------------------------------------
+; Mark end of compilation unit
+;------------------------------------------------------------------------------
+    end
 
 ; vim:ft=armv5
