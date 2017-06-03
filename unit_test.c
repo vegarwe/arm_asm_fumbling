@@ -181,6 +181,15 @@ void test_fisk_gcd(void)
     printf("gcd %d\r\n", gcd(15, 9));
 }
 
+uint32_t asm_div_mod(uint32_t a, uint32_t b, uint32_t* div);
+
+void test_fisk_asm_div_mod(void)
+{
+    uint32_t div = 0;
+    uint32_t mod = asm_div_mod(19, 5, &div);
+    printf("asm_div_mod, result %d mod %d\r\n", div, mod);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -192,6 +201,7 @@ int main(void)
     RUN_TEST(test_fisk_external_data);
     RUN_TEST(test_fisk_fizz_buzz);
     RUN_TEST(test_fisk_gcd);
+    RUN_TEST(test_fisk_asm_div_mod);
     int result = UNITY_END();
 
     return result;

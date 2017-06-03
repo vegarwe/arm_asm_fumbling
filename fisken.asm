@@ -14,6 +14,7 @@
     export  external_data
     export  fizz_buzz
     export  gcd
+    export  asm_div_mod
     import  malloc
     import  free
     import  printf
@@ -341,13 +342,65 @@ gcd
     bx      lr
 
 ;------------------------------------------------------------------------------
+; @brief Example 2.10. Macro implementing division
+;
+; http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.kui0100a/armasm_cihjgdid.htm
+;------------------------------------------------------------------------------
+    macro
+$Lab
+    DivMod  $Div,$Top,$Bot,$Temp
+    assert  $Top <> $Bot            ; Produce an error message if the
+    assert  $Top <> $Temp           ; registers supplied are
+    assert  $Bot <> $Temp           ; not all different
+    if      "$Div" <> ""
+        assert  $Div <> $Top        ; These three only matter if $Div
+        assert  $Div <> $Bot        ; is not null ("")
+        assert  $Div <> $Temp       ;
+    endif
+$Lab
+    mov     $Temp, $Bot             ; Put divisor in $Temp
+    cmp     $Temp, $Top, lsr #1     ; double it until
+90  movls   $Temp, $Temp, lsl #1    ; 2 * $Temp > $Top
+    cmp     $Temp, $Top, lsr #1
+    bls     %b90                    ; The b means search backwards
+    if      "$Div" <> ""            ; Omit next instruction if $Div is null
+        mov     $Div, #0            ; Initialize quotient
+    endif
+91  cmp     $Top, $Temp             ; Can we subtract $Temp?
+    subcs   $Top, $Top,$Temp        ; If we can, do so
+    if      "$Div" <> ""            ; Omit next instruction if $Div is null
+        adc     $Div, $Div, $Div    ; Double $Div
+    endif
+    mov     $Temp, $Temp, lsr #1    ; Halve $Temp,
+    cmp     $Temp, $Bot             ; and loop until
+    bhs     %b91                    ; less than divisor
+    mend
+
+;------------------------------------------------------------------------------
+; @brief Use DivMod macro to implement division
+;
+; @param[in]    a   Divisor
+; @param[in]    b   Divident
+; @param[out]   div qutient? Division result
+;
+; @return       Remainder (modulo)
+;------------------------------------------------------------------------------
+asm_div_mod
+    push    {r2, lr}            ; Store output param addr (and one more reg)
+    DivMod  r2,r0,r1,r3         ; Run DivMod macro
+    pop     {r1, lr}            ; Pop output param into scratch register
+    str     r2, [r1]            ; Store result of division in ouput param
+    bx      lr                  ; Return
+
+
+;------------------------------------------------------------------------------
 ; @brief  asdf_data read write data section
 ;------------------------------------------------------------------------------
     align   4
     area    asdf_data, data, readwrite
-    export  asdf2           ; Make asdf2 buffer available externally
-asdf1 space   255           ; defines 255 bytes of zeroed store
-asdf2 fill    50,0x63,1     ; defines 50 bytes containing 'c'
+    export  asdf2               ; Make asdf2 buffer available externally
+asdf1 space   255               ; defines 255 bytes of zeroed store
+asdf2 fill    50,0x63,1         ; defines 50 bytes containing 'c'
 
 
 ;------------------------------------------------------------------------------
