@@ -382,11 +382,6 @@
               <FileType>2</FileType>
               <FilePath>.\fisken.asm</FilePath>
             </File>
-            <File>
-              <FileName>data.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\data.asm</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

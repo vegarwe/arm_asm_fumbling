@@ -1,7 +1,5 @@
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Learning ARM assembler
- ;
- ; Header section
+ ; @brief Learning ARM assembler, asm_func code section
  ;
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     AREA asm_func, CODE, READONLY
@@ -20,8 +18,6 @@
     IMPORT free
     IMPORT printf
     IMPORT sprintf
-    IMPORT data1
-    IMPORT data2
     ;PRESERVE8
 
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -291,12 +287,12 @@ fizz_buzz_loop5
     beq     fizz_buzz_end5
     ; Create string from number
     push    {r12, lr}           ; Store registers
-    ldr     r0, =data1
+    ldr     r0, =asdf1
     adr     r1, fizz_buzz_frms  ; Fizz buzz format string
     ;                           ; Input param already in r2
     bl.w    sprintf
     pop     {r12, lr}           ; Restore registers
-    ldr     r0, =data1
+    ldr     r0, =asdf1
     bx      lr                  ; Return char buffer
 fizz_buzz_end5
     adreq   r0, fizz_buzz_buzz
@@ -310,14 +306,27 @@ fizz_buzz_end3
 
     align   4
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- ; @brief Return stuff from data section (see separate .asm file)
+ ; @brief Return stuff from data section
  ;
  ; @return      Char buffer with addresses loaded in from named external symbol
 external_data
-    ldr     r0, =data2          ; Buffer to return
+    ldr     r0, =asdf2          ; Buffer to return
     bx      lr                  ; Return char buffer
 
 ;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-; vim:ft=armv5
+
+
+;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ ; @brief  asdf_data read write data section
+ ;
+;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        AREA    asdf_data, DATA, READWRITE
+        EXPORT asdf1
+        EXPORT asdf2
+
+asdf1   SPACE   255       ; defines 255 bytes of zeroed store
+asdf2   FILL    50,0x63,1 ; defines 50 bytes containing 'c'
+
     END
 
+; vim:ft=armv5
