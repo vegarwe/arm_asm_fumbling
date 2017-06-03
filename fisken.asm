@@ -13,6 +13,7 @@
     export  fisk_print
     export  external_data
     export  fizz_buzz
+    export  gcd
     import  malloc
     import  free
     import  printf
@@ -24,6 +25,7 @@
 ; @brief Random (unexported) assembly function
 ;------------------------------------------------------------------------------
 my_other_asm
+    mov32   r2, #0xabcd3421
     ; Do some memory storing
     mov     r2, #0x0000ffff
     add     r2, #0x00ee0000
@@ -55,6 +57,8 @@ my_other_asm
 ;
 ; @return       The input value (after beeing manipulated)
 ;------------------------------------------------------------------------------
+exit_return                     ; Tiny, stupid helper (return) label
+    bx      lr
 my_asm
     push    {r0-r3, r12, lr}
     bl      my_other_asm
@@ -75,8 +79,13 @@ while_start
     subs    r12, #1
     bne     while_start
 
-    add     r0, r0, r0, lsl #1      ; r0 = 3 * r0
-    bx      lr
+    add     r0, r0, r0, lsl #1  ; r0 = 3 * r0
+    adr     r2, JumpTable       ; Get address of JumpTable
+    ldr     pc, [r2]            ; Branch based on memory addr (no link register update)
+    align   4
+JumpTable
+    dcd     exit_return         ; Store label address in memory
+    ltorg                       ; Create literal pool here
 
 
 ;------------------------------------------------------------------------------
@@ -91,7 +100,7 @@ ll_init
     ; Allocate memory
     push    {r0-r1, r12, lr}    ; Store registers (including params)
     mov     r0, #8              ; Need 8 bytes of data for new node
-    bl.w    malloc              ; Allocate memory for new node
+    bl      malloc              ; Allocate memory for new node
     pop     {r2-r3, r12, lr}    ; Pop params ll and value into r2 and r3
     mov     r1, #0              ; Zero initialize new node
     str     r0, [r2]            ; Store pointer to new memory in input param
@@ -111,7 +120,7 @@ ll_init
 ll_add
     push    {r0-r1, r12, lr}    ; Store registers (including params)
     mov     r0, #8              ; Need 8 bytes of data for new node
-    bl.w    malloc              ; Allocate memory for new node
+    bl      malloc              ; Allocate memory for new node
     pop     {r2-r3, r12, lr}    ; Pop params ll and value into r2 and r3
     ldr     r1, [r2]            ; Fetch current next (if any)
     str     r0, [r2]            ; Store pointer to new memory in input param
@@ -147,7 +156,7 @@ del_node
     ldr     r2, [r0, #0]        ; Read in 'next.next' (might be NULL)
     str     r2, [r3, #0]        ; Move next.next to current.next
     push    {r0-r3, r12, lr}    ; Store registers
-    bl.w    free                ; Free current
+    bl      free                ; Free current
     pop     {r0-r3, r12, lr}    ; Restore registers
     mov     r0, #1              ; Set return value 'true'
     bx      lr                  ; Return
@@ -160,7 +169,7 @@ del_first                       ; Cannot delete first node, must move to instead
     ldr     r2, [r0, #4]        ; Read in 'next.value'
     str     r2, [r3, #4]        ; Move next.next to current.next
     push    {r0-r3, r12, lr}    ; Store registers
-    bl.w    free                ; Free current
+    bl      free                ; Free current
     pop     {r0-r3, r12, lr}    ; Restore registers
     mov     r0, #1              ; Set return value 'true'
     bx      lr                  ; Return
@@ -197,7 +206,7 @@ free_loop
     mov     r0, r1              ; Setup node to be freed
     ldr     r1, [r1]            ; Read in 'next'
     push    {r1-r2, r12, lr}    ; Store registers
-    bl.w    free                ; Free current
+    bl      free                ; Free current
     pop     {r1-r2, r12, lr}    ; Restore registers
     add     r2, #1              ; Increment freed count
     b       free_loop           ; Loop
@@ -206,17 +215,19 @@ free_loop
 ;------------------------------------------------------------------------------
 ; @brief Some error strings used by err_str
 ;------------------------------------------------------------------------------
+error0
+    dcb     "Out of error table bounds error string", 0
 error1
     dcb     "General purpose some shit when down error", 0
 error2
     dcb     "This is some weird shit error", 0
+    align   4
 error1_old
     dcw     0x6547, 0x656e, 0x6172, 0x206c, 0x7570, 0x7072, 0x736f, 0x2065, 0x6f73, 0x656d, 0x7320, 0x6968, 0x2074, 0x6877, 0x6e65, 0x6420, 0x776f, 0x206e, 0x7265, 0x6f72, 0x0072
     align   4
 error_table
-    dcd     0, error1, error2       ; Start index at 1 (not zero)
-    ;DCI.W   .error1
-    ;DCI.W   0xf3af8000
+    dcd     error0, error1, error2  ; Table of error strings, start index at 1
+error_num equ   2                   ; Number of entries in error table
 ;------------------------------------------------------------------------------
 ; @brief Get error string from err code
 ;
@@ -225,7 +236,9 @@ error_table
 ; @return       Descriptive error string
 ;------------------------------------------------------------------------------
 err_str
-    ;@ TODO: Should now size of error_table, only look up valid indexes
+    cmp     r0, #error_num          ; Check if lookup code are out of bounds
+    adrhi   r0, error0              ;   General error, out of bounds index
+    bxhi    lr                      ;   If code is >= error_num then return
     adr     r1, error_table         ; Read in start of error table
     ldr     r0, [r1, r0, lsl #2]    ; Look up r0 (*4) in r1, store in r0
     bx      lr                      ; Return pointer to error string
@@ -247,7 +260,7 @@ fisk_print
     push    {r12, lr}           ; Store registers (including params)
     adr     r0, print_string1
     mov     r1, #34             ; Give number to format string
-    bl.w    printf              ; Allocate memory for new node
+    bl      printf              ; Allocate memory for new node
     pop     {r12, lr}           ; Restore registers
     bx      lr                  ; Return what ever, nobody cares
 
@@ -288,7 +301,7 @@ fizz_buzz_loop5
     ldr     r0, =asdf1
     adr     r1, fizz_buzz_frms  ; Fizz buzz format string
     ;                           ; Input param already in r2
-    bl.w    sprintf
+    bl      sprintf
     pop     {r12, lr}           ; Restore registers
     ldr     r0, =asdf1
     bx      lr                  ; Return char buffer
@@ -312,10 +325,25 @@ external_data
     ldr     r0, =asdf2          ; Buffer to return
     bx      lr                  ; Return char buffer
 
+;------------------------------------------------------------------------------
+; @brief Compact greatest common divider
+;
+; @param[in]    a   Variable a
+; @param[in]    b   Variable b
+;
+; @return       Greatest euclidian divider between a and b
+;------------------------------------------------------------------------------
+gcd
+    cmp     r0, r1
+    subgt   r0, r0, r1
+    suble   r1, r1, r0
+    bne     gcd
+    bx      lr
 
 ;------------------------------------------------------------------------------
 ; @brief  asdf_data read write data section
 ;------------------------------------------------------------------------------
+    align   4
     area    asdf_data, data, readwrite
     export  asdf2           ; Make asdf2 buffer available externally
 asdf1 space   255           ; defines 255 bytes of zeroed store

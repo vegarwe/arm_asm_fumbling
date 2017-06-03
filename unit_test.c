@@ -139,6 +139,9 @@ void test_fisk_vars(void)
 
     error = err_str(2);
     printf("error %p %s\r\n", error, error);
+
+    error = err_str(4);
+    printf("error %p %s\r\n", error, error);
 }
 
 void fisk_print(void);
@@ -171,6 +174,13 @@ void test_fisk_fizz_buzz(void)
     TEST_ASSERT_EQUAL_STRING("fizzbuzz", fizz_buzz(15));
 }
 
+uint32_t gcd(uint32_t a, uint32_t b);
+
+void test_fisk_gcd(void)
+{
+    printf("gcd %d\r\n", gcd(15, 9));
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -181,6 +191,7 @@ int main(void)
     RUN_TEST(test_fisk_printf);
     RUN_TEST(test_fisk_external_data);
     RUN_TEST(test_fisk_fizz_buzz);
+    RUN_TEST(test_fisk_gcd);
     int result = UNITY_END();
 
     return result;
