@@ -105,7 +105,7 @@
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
         <sDlgPa></sDlgPa>
-        <sIfile>..\simulator.ini</sIfile>
+        <sIfile>simulator.ini</sIfile>
         <tDll></tDll>
         <tDllPa></tDllPa>
         <tDlgDll></tDlgDll>
@@ -140,7 +140,56 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC4000 -FN2 -FF0nrf52xxx -FS00 -FL0200000 -FF1nrf52xxx_uicr -FS110001000 -FL11000 -FP0($$Device:nRF52832_xxAA$Flash\nrf52xxx.flm) -FP1($$Device:nRF52832_xxAA$Flash\nrf52xxx_uicr.flm))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>221</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>7872</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\unit_test.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Simulator\unit_test.c\221</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>348</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>1054</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>RTE\Device\nRF52832_xxAA\arm_startup_nrf52.s</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Simulator\RTE/Device/nRF52832_xxAA/arm_startup_nrf52.s\348</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>194</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>7240</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\unit_test.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Simulator\unit_test.c\194</Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -148,6 +197,14 @@
           <ItemText>error</ItemText>
         </Ww>
       </WatchWindow1>
+      <MemoryWindow1>
+        <Mm>
+          <WinNumber>1</WinNumber>
+          <SubType>0</SubType>
+          <ItemText>0x20005990</ItemText>
+          <AccSizeX>0</AccSizeX>
+        </Mm>
+      </MemoryWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
       </Tracepoint>
@@ -171,7 +228,7 @@
         <aLa>0</aLa>
         <aPa1>0</aPa1>
         <AscS4>0</AscS4>
-        <aSer4>0</aSer4>
+        <aSer4>1</aSer4>
         <StkLoc>0</StkLoc>
         <TrcWin>0</TrcWin>
         <newCpu>0</newCpu>
@@ -227,8 +284,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Unity\src\unity.c</PathWithFileName>
-      <FilenameWithoutPath>unity.c</FilenameWithoutPath>
+      <PathWithFileName>.\unit_test.c</PathWithFileName>
+      <FilenameWithoutPath>unit_test.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -239,8 +296,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\unit_test.c</PathWithFileName>
-      <FilenameWithoutPath>unit_test.c</FilenameWithoutPath>
+      <PathWithFileName>.\Unity\src\unity.c</PathWithFileName>
+      <FilenameWithoutPath>unity.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -259,8 +316,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\simulator.ini</PathWithFileName>
-      <FilenameWithoutPath>simulator.ini</FilenameWithoutPath>
+      <PathWithFileName>.\_build\unity_output.txt</PathWithFileName>
+      <FilenameWithoutPath>unity_output.txt</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -271,8 +328,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\_build\unity_output.txt</PathWithFileName>
-      <FilenameWithoutPath>unity_output.txt</FilenameWithoutPath>
+      <PathWithFileName>.\simulator.ini</PathWithFileName>
+      <FilenameWithoutPath>simulator.ini</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

@@ -334,7 +334,7 @@
               <MiscControls></MiscControls>
               <Define>BLE_DFU_APP_SUPPORT __HEAP_SIZE=0 BLE_STACK_SUPPORT_REQD S332 BOARD_PCA10040 NRF52_PAN_12 NRF52_PAN_15 NRF52_PAN_20 NRF52_PAN_30 NRF52_PAN_31 NRF52_PAN_36 NRF52_PAN_51 NRF52_PAN_53 NRF52_PAN_54 NRF52_PAN_55 NRF52_PAN_58 NRF52_PAN_62 NRF52_PAN_63 NRF52_PAN_64 NRF_LOG_USES_RAW_UART=1 CONFIG_GPIO_AS_PINRESET SWI_DISABLE0 SOFTDEVICE_PRESENT NRF52 BSP_DEFINES_ONLY NO_DISPLAY DEBUG DK_GPIO_DEBUG NO_WATCHDOG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\src\config;..\..\src\sdk_modified;..\..\..\nrf_sdk\components\ble\ble_services\ble_bas;..\..\..\nrf_sdk\components\ble\ble_services\ble_dfu;..\..\..\nrf_sdk\components\ble\ble_services\ble_dis;..\..\..\nrf_sdk\components\ble\ble_services\ble_hrs;..\..\..\nrf_sdk\components\ble\ble_services\ble_ancs_c;..\..\..\nrf_sdk\components\ble\ble_services\ble_ans_c;..\..\..\nrf_sdk\components\ble\ble_services\ble_cts_c;..\..\..\nrf_sdk\components\ble\common;..\..\..\nrf_sdk\components\ble\device_manager;..\..\..\nrf_sdk\components\ble\ble_db_discovery;..\..\..\nrf_sdk\components\drivers_nrf\common;..\..\..\nrf_sdk\components\drivers_nrf\config;..\..\..\nrf_sdk\components\drivers_nrf\delay;..\..\..\nrf_sdk\components\drivers_nrf\gpiote;..\..\..\nrf_sdk\components\drivers_nrf\hal;..\..\..\nrf_sdk\components\drivers_nrf\ppi;..\..\..\nrf_sdk\components\drivers_nrf\pstorage;..\..\..\nrf_sdk\components\drivers_nrf\uart;..\..\..\nrf_sdk\components\drivers_nrf\wdt;..\..\..\nrf_sdk\components\libraries\bootloader_dfu;..\..\..\nrf_sdk\components\libraries\button;..\..\..\nrf_sdk\components\libraries\crc32;..\..\..\nrf_sdk\components\libraries\experimental_section_vars;..\..\..\nrf_sdk\components\libraries\fifo;..\..\..\nrf_sdk\components\libraries\fstorage\config;..\..\..\nrf_sdk\components\libraries\fstorage;..\..\..\nrf_sdk\components\libraries\sensorsim;..\..\..\nrf_sdk\components\libraries\timer;..\..\..\nrf_sdk\components\libraries\trace;..\..\..\nrf_sdk\components\libraries\uart;..\..\..\nrf_sdk\components\libraries\util;..\..\..\nrf_sdk\components\softdevice\common\softdevice_handler;..\..\..\nrf_sdk\components\softdevice\s332\headers;..\..\..\nrf_sdk\components\softdevice\s332\headers\nrf52;..\..\..\nrf_sdk\components\toolchain;..\..\..\nrf_sdk\examples\bsp;..\..\..\nrf_sdk\external\segger_rtt;..\..\src;..\..\src\analysis;..\..\src\app;..\..\src\battery;..\..\src\ble;..\..\src\button;..\..\src\debug;..\..\src\display;..\..\src\factory_reset;..\..\src\lib;..\..\src\prod_test;..\..\src\sensors;..\..\src\storage;..\..\src\vibrator;..\..\lib_alg;..\Unity\src;..\..\..\nrf_sdk\components\libraries\log;..\..\slice\src\config;..\..\..\nrf_sdk\components\libraries\log\src</IncludePath>
+              <IncludePath>..\..\src\config;..\..\src\sdk_modified;..\..\..\nrf_sdk\components\ble\ble_services\ble_bas;..\..\..\nrf_sdk\components\ble\ble_services\ble_dfu;..\..\..\nrf_sdk\components\ble\ble_services\ble_dis;..\..\..\nrf_sdk\components\ble\ble_services\ble_hrs;..\..\..\nrf_sdk\components\ble\ble_services\ble_ancs_c;..\..\..\nrf_sdk\components\ble\ble_services\ble_ans_c;..\..\..\nrf_sdk\components\ble\ble_services\ble_cts_c;..\..\..\nrf_sdk\components\ble\common;..\..\..\nrf_sdk\components\ble\device_manager;..\..\..\nrf_sdk\components\ble\ble_db_discovery;..\..\..\nrf_sdk\components\drivers_nrf\common;..\..\..\nrf_sdk\components\drivers_nrf\config;..\..\..\nrf_sdk\components\drivers_nrf\delay;..\..\..\nrf_sdk\components\drivers_nrf\gpiote;..\..\..\nrf_sdk\components\drivers_nrf\hal;..\..\..\nrf_sdk\components\drivers_nrf\ppi;..\..\..\nrf_sdk\components\drivers_nrf\pstorage;..\..\..\nrf_sdk\components\drivers_nrf\uart;..\..\..\nrf_sdk\components\drivers_nrf\wdt;..\..\..\nrf_sdk\components\libraries\bootloader_dfu;..\..\..\nrf_sdk\components\libraries\button;..\..\..\nrf_sdk\components\libraries\crc32;..\..\..\nrf_sdk\components\libraries\experimental_section_vars;..\..\..\nrf_sdk\components\libraries\fifo;..\..\..\nrf_sdk\components\libraries\fstorage\config;..\..\..\nrf_sdk\components\libraries\fstorage;..\..\..\nrf_sdk\components\libraries\sensorsim;..\..\..\nrf_sdk\components\libraries\timer;..\..\..\nrf_sdk\components\libraries\trace;..\..\..\nrf_sdk\components\libraries\uart;..\..\..\nrf_sdk\components\libraries\util;..\..\..\nrf_sdk\components\softdevice\common\softdevice_handler;..\..\..\nrf_sdk\components\softdevice\s332\headers;..\..\..\nrf_sdk\components\softdevice\s332\headers\nrf52;..\..\..\nrf_sdk\components\toolchain;..\..\..\nrf_sdk\examples\bsp;..\..\..\nrf_sdk\external\segger_rtt;..\..\src;..\..\src\analysis;..\..\src\app;..\..\src\battery;..\..\src\ble;..\..\src\button;..\..\src\debug;..\..\src\display;..\..\src\factory_reset;..\..\src\lib;..\..\src\prod_test;..\..\src\sensors;..\..\src\storage;..\..\src\vibrator;..\..\lib_alg;Unity\src;..\..\..\nrf_sdk\components\libraries\log;..\..\slice\src\config;..\..\..\nrf_sdk\components\libraries\log\src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -391,14 +391,14 @@
           <GroupName>Unit_test</GroupName>
           <Files>
             <File>
-              <FileName>unity.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Unity\src\unity.c</FilePath>
-            </File>
-            <File>
               <FileName>unit_test.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\unit_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>unity.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Unity\src\unity.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -472,14 +472,14 @@
           </GroupOption>
           <Files>
             <File>
-              <FileName>simulator.ini</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\simulator.ini</FilePath>
-            </File>
-            <File>
               <FileName>unity_output.txt</FileName>
               <FileType>5</FileType>
               <FilePath>.\_build\unity_output.txt</FilePath>
+            </File>
+            <File>
+              <FileName>simulator.ini</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\simulator.ini</FilePath>
             </File>
           </Files>
         </Group>
