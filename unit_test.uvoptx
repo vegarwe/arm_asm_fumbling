@@ -144,22 +144,6 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>221</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>7872</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\unit_test.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\Simulator\unit_test.c\221</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
           <LineNumber>348</LineNumber>
           <EnabledFlag>1</EnabledFlag>
           <Address>1054</Address>
@@ -172,22 +156,6 @@
           <Filename>RTE\Device\nRF52832_xxAA\arm_startup_nrf52.s</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\Simulator\RTE/Device/nRF52832_xxAA/arm_startup_nrf52.s\348</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>194</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>7240</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\unit_test.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\Simulator\unit_test.c\194</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
